@@ -6,9 +6,9 @@ import {
   Token,
   TradeType,
 } from "udonswap-core";
-// import { MixedRouteSDK } from "routersdk18";
+// import { MixedRouteSDK } from "udonswap-router";
 // import { Pair, Route as V2Route } from "udonswap-v2-sdk";
-import { FeeAmount, Pool, Route as V3Route } from "v3sdk18";
+import { FeeAmount, Pool, Route as V3Route } from "udonswap-v3";
 import { MAX_AUTO_SLIPPAGE_TOLERANCE } from "wallet/src/constants/transactions";
 import { NativeCurrency } from "wallet/src/features/tokens/NativeCurrency";
 import {

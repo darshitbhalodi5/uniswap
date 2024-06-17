@@ -8,7 +8,7 @@ import {
   FlatFeeOptions,
   UNIVERSAL_ROUTER_ADDRESS,
 } from "udonswap-sdk-universal-router";
-import { FeeOptions } from "v3sdk18";
+import { FeeOptions } from "udonswap-v3";
 import ERC20_ABI from "uniswap/src/abis/erc20.json";
 import { Erc20 } from "uniswap/src/abis/types";
 import { logger } from "utilities/src/logger/logger";

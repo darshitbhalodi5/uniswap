@@ -2,7 +2,7 @@ import { AnyAction } from "@reduxjs/toolkit";
 import { providers } from "ethers";
 import { Dispatch } from "react";
 import { TradeType } from "udonswap-core";
-import { Protocol } from "routersdk18";
+import { Protocol } from "udonswap-router";
 import { TransactionListQuery } from "uniswap/src/data/graphql/uniswap-data-api/__generated__/types-and-hooks";
 import { ChainId } from "wallet/src/constants/chains";
 import { AssetType } from "wallet/src/entities/assets";

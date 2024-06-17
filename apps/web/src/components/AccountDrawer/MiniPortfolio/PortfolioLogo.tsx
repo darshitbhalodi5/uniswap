@@ -1,23 +1,28 @@
-import { ChainId, Currency } from '@uniswap/sdk-core'
-import blankTokenUrl from 'assets/svg/blank_token.svg'
-import { ReactComponent as UnknownStatus } from 'assets/svg/contract-interaction.svg'
-import { MissingImageLogo } from 'components/Logo/AssetLogo'
-import { ChainLogo, getDefaultBorderRadius } from 'components/Logo/ChainLogo'
-import { Unicon } from 'components/Unicon'
-import useTokenLogoSource from 'hooks/useAssetLogoSource'
-import useENSAvatar from 'hooks/useENSAvatar'
-import React from 'react'
-import { Loader } from 'react-feather'
-import styled from 'styled-components'
-import { useIsDarkMode } from 'theme/components/ThemeToggle'
-import { UniconV2 } from 'ui/src/components/UniconV2'
-import { useLogolessColorScheme } from 'ui/src/utils/colors'
-import { FeatureFlags } from 'uniswap/src/features/experiments/flags'
-import { useFeatureFlag } from 'uniswap/src/features/experiments/hooks'
+import { Currency } from "udonswap-core";
+import { ChainId } from "udonswap-core";
+import blankTokenUrl from "assets/svg/blank_token.svg";
+import { ReactComponent as UnknownStatus } from "assets/svg/contract-interaction.svg";
+import {
+  MissingImageLogo,
+  MissingImageLogoPool1,
+  MissingImageLogoPool2,
+} from "components/Logo/AssetLogo";
+import { ChainLogo, getDefaultBorderRadius } from "components/Logo/ChainLogo";
+import { Unicon } from "components/Unicon";
+import useTokenLogoSource from "hooks/useAssetLogoSource";
+// import useENSAvatar from "hooks/useENSAvatar";
+import React from "react";
+import { Loader } from "react-feather";
+import styled from "styled-components";
+import { useIsDarkMode } from "theme/components/ThemeToggle";
+import { UniconV2 } from "ui/src/components/UniconV2";
+import { useLogolessColorScheme } from "ui/src/utils/colors";
+import { FeatureFlags } from "uniswap/src/features/experiments/flags";
+import { useFeatureFlag } from "uniswap/src/features/experiments/hooks";
 
 const UnknownContract = styled(UnknownStatus)`
   color: ${({ theme }) => theme.neutral2};
-`
+`;
 
 const DoubleLogoContainer = styled.div`
   display: flex;
@@ -39,7 +44,7 @@ const DoubleLogoContainer = styled.div`
     border-radius: 0 20px 20px 0;
     object-position: 100% 0;
   }
-`
+`;
 
 const LogoContainer = styled.div`
   display: flex;
@@ -47,19 +52,19 @@ const LogoContainer = styled.div`
   position: relative;
   top: 0;
   left: 0;
-`
+`;
 
 const ENSAvatarImg = styled.img`
   border-radius: 8px;
   height: 40px;
   width: 40px;
-`
+`;
 
 const CircleLogoImage = styled.img<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   border-radius: 50%;
-`
+`;
 
 const L2LogoContainer = styled.div`
   position: absolute;
@@ -72,77 +77,177 @@ const L2LogoContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 interface DoubleLogoProps {
-  logo1?: string
-  logo2?: string
-  size: string
-  onError1?: () => void
-  onError2?: () => void
+  currency1?: Currency;
+  currency2?: Currency;
+  size: string;
+  onError1?: () => void;
+  onError2?: () => void;
 }
 
-function DoubleLogo({ logo1, onError1, logo2, onError2, size }: DoubleLogoProps) {
+function DoubleLogo({
+  currency1,
+  onError1,
+  currency2,
+  onError2,
+  size,
+}: DoubleLogoProps) {
+  const isDarkMode = useIsDarkMode();
+  const logolessColorScheme1 = useLogolessColorScheme(
+    currency1?.name ?? currency1?.symbol ?? "",
+  );
+  const logolessColorScheme2 = useLogolessColorScheme(
+    currency2?.name ?? currency2?.symbol ?? "",
+  );
+  let foreground1, background1, foreground2, background2;
+  {
+    const { foreground, background } = isDarkMode
+      ? logolessColorScheme1.dark
+      : logolessColorScheme1.light;
+
+    foreground1 = foreground;
+    background1 = background;
+  }
+  {
+    const { foreground, background } = isDarkMode
+      ? logolessColorScheme2.dark
+      : logolessColorScheme2.light;
+
+    foreground2 = foreground;
+    background2 = background;
+  }
   return (
     <DoubleLogoContainer>
-      <CircleLogoImage size={size} src={logo1 ?? blankTokenUrl} onError={onError1} />
-      <CircleLogoImage size={size} src={logo2 ?? blankTokenUrl} onError={onError2} />
+      {/* <CircleLogoImage
+        size={size}
+        src={logo1 ?? blankTokenUrl}
+        onError={onError1}
+        alt="ololol"
+      /> */}
+
+      <MissingImageLogoPool1
+        $size={size}
+        $textColor={foreground1}
+        $backgroundColor={background1}
+      >
+        {currency1?.symbol
+          ?.toUpperCase()
+          .replace("$", "")
+          .replace(/\s+/g, "")
+          .slice(0, 3)}
+      </MissingImageLogoPool1>
+
+      {/* <CircleLogoImage
+        size={size}
+        src={logo2 ?? blankTokenUrl}
+        onError={onError2}
+      /> */}
+      <MissingImageLogoPool2
+        $size={size}
+        $textColor={foreground2}
+        $backgroundColor={background2}
+      >
+        {currency2?.symbol
+          ?.toUpperCase()
+          .replace("$", "")
+          .replace(/\s+/g, "")
+          .slice(0, 3)}
+      </MissingImageLogoPool2>
     </DoubleLogoContainer>
-  )
+  );
 }
 
 interface DoubleCurrencyLogoProps {
-  chainId: ChainId
-  currencies: Array<Currency | undefined>
-  images?: Array<string | undefined>
-  size: string
+  chainId: ChainId;
+  currencies: Array<Currency | undefined>;
+  images?: Array<string | undefined>;
+  size: string;
 }
 
-function DoubleCurrencyLogo({ chainId, currencies, images, size }: DoubleCurrencyLogoProps) {
+function DoubleCurrencyLogo({
+  chainId,
+  currencies,
+  images,
+  size,
+}: DoubleCurrencyLogoProps) {
   const [src, nextSrc] = useTokenLogoSource({
     address: currencies?.[0]?.wrapped.address,
     chainId,
     isNative: currencies?.[0]?.isNative,
     primaryImg: images?.[0],
-  })
+  });
   const [src2, nextSrc2] = useTokenLogoSource({
     address: currencies?.[1]?.wrapped.address,
     chainId,
     isNative: currencies?.[1]?.isNative,
     primaryImg: images?.[1],
-  })
+  });
 
   if (currencies.length === 1 && src) {
-    return <CircleLogoImage size={size} src={src} onError={nextSrc} />
+    return <CircleLogoImage size={size} src={src} onError={nextSrc} />;
   }
   if (currencies.length > 1) {
-    return <DoubleLogo logo1={src} onError1={nextSrc} logo2={src2} onError2={nextSrc2} size={size} />
+    return (
+      <DoubleLogo
+        currency1={currencies?.[0]}
+        onError1={nextSrc}
+        currency2={currencies?.[1]}
+        onError2={nextSrc2}
+        size={size}
+      />
+    );
   }
-  return <LogolessPlaceholder currency={currencies?.[0]} size={size} />
+  return <LogolessPlaceholder currency={currencies?.[0]} size={size} />;
 }
 
-function LogolessPlaceholder({ currency, size }: { currency?: Currency; size: string }) {
-  const isDarkMode = useIsDarkMode()
-  const logolessColorScheme = useLogolessColorScheme(currency?.name ?? currency?.symbol ?? '')
-  const { foreground, background } = isDarkMode ? logolessColorScheme.dark : logolessColorScheme.light
+function LogolessPlaceholder({
+  currency,
+  size,
+}: {
+  currency?: Currency;
+  size: string;
+}) {
+  const isDarkMode = useIsDarkMode();
+  const logolessColorScheme = useLogolessColorScheme(
+    currency?.name ?? currency?.symbol ?? "",
+  );
+  const { foreground, background } = isDarkMode
+    ? logolessColorScheme.dark
+    : logolessColorScheme.light;
 
   return (
-    <MissingImageLogo $size={size} $textColor={foreground} $backgroundColor={background}>
-      {currency?.symbol?.toUpperCase().replace('$', '').replace(/\s+/g, '').slice(0, 3)}
+    <MissingImageLogo
+      $size={size}
+      $textColor={foreground}
+      $backgroundColor={background}
+    >
+      {currency?.symbol
+        ?.toUpperCase()
+        .replace("$", "")
+        .replace(/\s+/g, "")
+        .slice(0, 3)}
     </MissingImageLogo>
-  )
+  );
 }
 
-function PortfolioAvatar({ accountAddress, size }: { accountAddress: string; size: string }) {
-  const { avatar, loading } = useENSAvatar(accountAddress, false)
-  const uniconV2Enabled = useFeatureFlag(FeatureFlags.UniconsV2)
+function PortfolioAvatar({
+  accountAddress,
+  size,
+}: {
+  accountAddress: string;
+  size: string;
+}) {
+  // const { avatar, loading } = useENSAvatar(accountAddress, false);
+  const uniconV2Enabled = useFeatureFlag(FeatureFlags.UniconsV2);
 
-  if (loading) {
-    return <Loader size={size} />
-  }
-  if (avatar) {
-    return <ENSAvatarImg src={avatar} alt="avatar" />
-  }
+  // if (loading) {
+  //   return <Loader size={size} />;
+  // }
+  // if (avatar) {
+  //   return <ENSAvatarImg src={avatar} alt="avatar" />;
+  // }
   return (
     <>
       {uniconV2Enabled ? (
@@ -151,26 +256,26 @@ function PortfolioAvatar({ accountAddress, size }: { accountAddress: string; siz
         <Unicon address={accountAddress} size={40} />
       )}
     </>
-  )
+  );
 }
 
 interface PortfolioLogoProps {
-  chainId: ChainId
-  accountAddress?: string
-  currencies?: Array<Currency | undefined>
-  images?: Array<string | undefined>
-  size?: string
-  style?: React.CSSProperties
+  chainId: ChainId;
+  accountAddress?: string;
+  currencies?: Array<Currency | undefined>;
+  images?: Array<string | undefined>;
+  size?: string;
+  style?: React.CSSProperties;
 }
 
 function SquareL2Logo({ chainId }: { chainId: ChainId }) {
-  if (chainId === ChainId.MAINNET) return null
+  // if (chainId === ChainId.MAINNET) return null;
 
   return (
     <L2LogoContainer>
       <ChainLogo fillContainer={true} chainId={chainId} />
     </L2LogoContainer>
-  )
+  );
 }
 
 // TODO(WEB-2983)
@@ -183,21 +288,40 @@ export function PortfolioLogo(props: PortfolioLogoProps) {
       {getLogo(props)}
       <SquareL2Logo chainId={props.chainId} />
     </LogoContainer>
-  )
+  );
 }
 
-function getLogo({ chainId, accountAddress, currencies, images, size = '40px' }: PortfolioLogoProps) {
+function getLogo({
+  chainId,
+  accountAddress,
+  currencies,
+  images,
+  size = "40px",
+}: PortfolioLogoProps) {
   if (accountAddress) {
-    return <PortfolioAvatar accountAddress={accountAddress} size={size} />
+    return <PortfolioAvatar accountAddress={accountAddress} size={size} />;
   }
   if (currencies && currencies.length) {
-    return <DoubleCurrencyLogo chainId={chainId} currencies={currencies} images={images} size={size} />
+    return (
+      <DoubleCurrencyLogo
+        chainId={chainId}
+        currencies={currencies}
+        images={images}
+        size={size}
+      />
+    );
   }
   if (images?.length === 1) {
-    return <CircleLogoImage size={size} src={images[0] ?? blankTokenUrl} />
+    return <CircleLogoImage size={size} src={images[0] ?? blankTokenUrl} />;
   }
-  if (images && images?.length >= 2) {
-    return <DoubleLogo logo1={images[0]} logo2={images[images.length - 1]} size={size} />
-  }
-  return <UnknownContract width={size} height={size} />
+  // if (images && images?.length >= 2) {
+  //   return (
+  //     <DoubleLogo
+  //       logo1={images[0]}
+  //       logo2={images[images.length - 1]}
+  //       size={size}
+  //     />
+  //   );
+  // }
+  return <UnknownContract width={size} height={size} />;
 }

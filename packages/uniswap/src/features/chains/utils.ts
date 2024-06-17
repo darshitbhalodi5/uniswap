@@ -1,4 +1,4 @@
-import { ChainId } from "smartorderrouter18";
+import { ChainId } from "udonswap-core";
 import { Chain } from "uniswap/src/data/graphql/uniswap-data-api/__generated__/types-and-hooks";
 
 export function toGraphQLChain(chainId: ChainId | number): Chain | undefined {

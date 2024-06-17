@@ -32,7 +32,7 @@ import { fonts, iconSizes, imageSizes, spacing } from "ui/src/theme";
 import { uniswapUrls } from "uniswap/src/constants/urls";
 import { logger } from "utilities/src/logger/logger";
 import { ONE_SECOND_MS } from "utilities/src/time/time";
-import { ADDRESS_ZERO } from "v3sdk18";
+import { ADDRESS_ZERO } from "udonswap-v3";
 import { TextInput } from "wallet/src/components/input/TextInput";
 import { WarningModal } from "wallet/src/components/modals/WarningModal/WarningModal";
 import { LearnMoreLink } from "wallet/src/components/text/LearnMoreLink";
