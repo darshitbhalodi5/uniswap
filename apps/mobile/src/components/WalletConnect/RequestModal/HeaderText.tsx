@@ -1,6 +1,6 @@
 import React from "react";
 import { Trans } from "react-i18next";
-import { Currency } from "sdkcore18";
+import { Currency } from "udonswap-core";
 import { WalletConnectRequest } from "src/features/walletConnect/walletConnectSlice";
 import { Text } from "ui/src";
 import { EthMethod } from "wallet/src/features/walletConnect/types";
