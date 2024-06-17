@@ -1,5 +1,5 @@
-import { CurrencyAmount, Token, ChainId } from "udonswap-core";
-import { V3_CORE_FACTORY_ADDRESSES } from "udonswap-smart-order-router-v3";
+import { CurrencyAmount, Token, ChainId, V3_CORE_FACTORY_ADDRESSES } from "udonswap-core";
+// import { V3_CORE_FACTORY_ADDRESSES } from "udonswap-smart-order-router-v3";
 import IUniswapV3PoolStateJSON from "@uniswap/v3-core/artifacts/contracts/interfaces/pool/IUniswapV3PoolState.sol/IUniswapV3PoolState.json";
 import { Pool, Position, computePoolAddress } from "udonswap-v3";
 import { BigNumber } from "ethers/lib/ethers";

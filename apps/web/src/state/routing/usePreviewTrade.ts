@@ -4,8 +4,9 @@ import {
   CurrencyAmount,
   Percent,
   TradeType,
+  ChainId,
 } from "udonswap-core";
-import { ChainId } from "udonswap-smart-order-router-v3"
+// import { ChainId } from "udonswap-smart-order-router-v3"
 import { ZERO_PERCENT } from "constants/misc";
 import useIsWindowVisible from "hooks/useIsWindowVisible";
 import { useMemo } from "react";

@@ -1,5 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber";
-import { MixedRouteSDK, RouteV2 } from "udonswap-router";
+// import { MixedRouteSDK, RouteV2 } from "udonswap-router";
 import {
   Currency,
   CurrencyAmount,
@@ -45,7 +45,7 @@ import {
 } from "./types";
 
 interface RouteResult {
-  routev2: V3Route<Currency, Currency> | null;
+  routev3: V3Route<Currency, Currency> | null;
   // routev2: V2Route<Currency, Currency> | null;
   // mixedRoute: MixedRouteSDK<Currency, Currency> | null;
   inputAmount: CurrencyAmount<Currency>;
@@ -79,7 +79,7 @@ export function computeRoutes(
       const isOnlyV3 = isVersionedRoute<V3PoolInRoute>(PoolType.V3Pool, route);
 
       return {
-        routev2: isOnlyV3
+        routev3: isOnlyV3
           ? new V3Route(route.map(parsePool), currencyIn, currencyOut)
           : null,
         // routev2: isOnlyV2
@@ -305,17 +305,17 @@ export async function transformQuoteToTrade(
     //       inputAmount,
     //       outputAmount,
     //     })) ?? [],
-    v2Routes:
+    v3Routes:
       routes
         ?.filter(
           (
             r,
           ): r is RouteResult & {
-            routev2: NonNullable<RouteResult["routev2"]>;
-          } => r.routev2 !== null,
+            routev3: NonNullable<RouteResult["routev3"]>;
+          } => r.routev3 !== null,
         )
-        .map(({ routev2, inputAmount, outputAmount }) => ({
-          routev2,
+        .map(({ routev3, inputAmount, outputAmount }) => ({
+          routev3,
           inputAmount,
           outputAmount,
         })) ?? [],

@@ -258,8 +258,8 @@ export class ClassicTrade extends Trade<Currency, Currency, TradeType> {
     //   inputAmount: CurrencyAmount<Currency>;
     //   outputAmount: CurrencyAmount<Currency>;
     // }[];
-    v2Routes: {
-      routev2: V3Route<Currency, Currency>;
+    v3Routes: {
+      routev3: V3Route<Currency, Currency>;
       inputAmount: CurrencyAmount<Currency>;
       outputAmount: CurrencyAmount<Currency>;
     }[];
