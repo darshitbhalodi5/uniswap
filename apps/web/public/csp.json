@@ -109,7 +109,8 @@
     "https://sepolia.explorer.mode.network/",
     "https://api.coingecko.com/",
     "https://tokenlist-api.vercel.app",
-    "https://tokenlist-api.vercel.app/v3-tokens"
+    "https://tokenlist-api.vercel.app/v3-tokens",
+    "https://sepolia.mode.network/"
   ],
   "workerSrc": ["'self'", "blob:"]
 }
